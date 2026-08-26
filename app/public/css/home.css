@@ -2006,72 +2006,115 @@ form.search-bar-home button:hover {
     padding: 80px 20px;
 }
 
-/* =======================================================
-                      ICONE HEARDER
-======================================================= */
+/* =====================================
+   PERFIL / BONEQUINHO
+===================================== */
 
-.perfil-menu{
-    position:relative;
+.perfil-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.perfil-btn{
-    width:42px;
-    height:42px;
-    border:none;
-    background:transparent;
-    cursor:pointer;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+/* BONEQUINHO */
+.perfil-botao {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: transparent !important;
+    border: none !important;
+    color: #222 !important;
+
+    cursor: pointer;
+    font-size: 20px !important;
 }
 
-.perfil-btn ion-icon{
-    font-size:24px;
-    color:#222;
+.perfil-botao ion-icon {
+    font-size: 20px;
+    color: #222;
 }
 
-.perfil-dropdown{
-    position:absolute;
-    top:50px;
-    right:0;
-    width:190px;
-    background:#fff;
-    border:1px solid #e6e6e6;
-    border-radius:10px;
-    box-shadow:0 8px 25px rgba(0,0,0,.12);
-    padding:8px 0;
-    list-style:none;
-    display:none;
-    z-index:999;
+
+/* =====================================
+   CAIXA DO MENU
+===================================== */
+
+.perfil-dropdown {
+    position: absolute;
+    top: 25px;
+    right: 0;
+    width: 190px;
+    min-height: 100px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column !important;
+    z-index: 9999;
 }
 
-.perfil-menu:hover .perfil-dropdown{
-    display:block;
+
+
+/* =====================================
+   BIOCLICKY
+===================================== */
+
+.perfil-dropdown .perfil-nome {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 5px 13px 10px !important;
+    color: #777;
+    font-size: 15px;
 }
 
-.perfil-titulo{
-    padding:12px 18px;
-    font-weight:700;
-    color:#666;
-    cursor:default;
-    border-bottom:1px solid #eee;
+
+/* =====================================
+   LINKS
+===================================== */
+
+.perfil-dropdown a {
+    display: block !important;
+    width: 100% !important;
+
+    padding: 8px 13px !important;
+    margin: 0 !important;
+
+    text-decoration: none !important;
+
+    color: #333;
+    font-size: 15px;
+
+    text-align: left;
 }
 
-.perfil-dropdown a{
-    display:block;
-    padding:12px 18px;
-    color:#222;
-    text-decoration:none;
-    transition:.2s;
+
+/* Efeito ao passar o mouse */
+.perfil-dropdown a:hover {
+    background: #f5f5f5;
 }
 
-.perfil-dropdown a:hover{
-    background:#f5f5f5;
+
+/* SAIR */
+.perfil-dropdown .sair {
+    color: #ff3b3b !important;
 }
 
-.perfil-dropdown .sair:hover{
-    background:#e53935;
-    color:#fff;
+
+/* =====================================
+   MOSTRAR MENU
+===================================== */
+
+.perfil-menu:hover .perfil-dropdown {
+    display: flex !important;
 }
 
 /* =======================================================
@@ -2263,3 +2306,237 @@ form.search-bar-home button:hover {
     }
 }
 
+/* =====================================
+   MEU PERFIL
+===================================== */
+
+.meuperfil-container {
+    width: 100%;
+    max-width: 635px;
+
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+
+/* TÍTULO */
+
+.meuperfil-titulo {
+    margin-bottom: 30px;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    color: #151515;
+}
+
+
+/* CARD */
+
+.meuperfil-card {
+    width: 100%;
+
+    background: #fff;
+
+    border: 1px solid #dfe3e5;
+    border-radius: 16px;
+
+    padding: 32px;
+}
+
+
+/* =====================================
+   TOPO
+===================================== */
+
+.meuperfil-topo {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+}
+
+
+/* ÍCONE */
+
+.meuperfil-icone {
+    width: 64px;
+    height: 64px;
+
+    border-radius: 50%;
+
+    background: #e8f9f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meuperfil-icone ion-icon {
+    font-size: 31px;
+
+    color: #2cc782;
+}
+
+
+/* IDENTIFICAÇÃO */
+
+.meuperfil-identificacao {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.meuperfil-identificacao h2 {
+    font-size: 18px;
+    font-weight: 700;
+
+    color: #171717;
+}
+
+.meuperfil-identificacao p {
+    font-size: 14px;
+
+    color: #68727a;
+}
+
+
+/* =====================================
+   LINHA
+===================================== */
+
+.meuperfil-linha {
+    display: block;
+
+    width: 100%;
+    height: 1px;
+
+    background: #e1e5e7;
+
+    margin: 24px 0 32px;
+}
+
+
+/* =====================================
+   CAMPOS
+===================================== */
+
+.meuperfil-campo {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+
+/* LABEL */
+
+.meuperfil-campo label {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    color: #586776;
+}
+
+.meuperfil-campo label ion-icon {
+    font-size: 18px;
+
+    color: #69747c;
+}
+
+
+/* INPUT */
+
+.meuperfil-campo input {
+    width: 100%;
+    height: 37px;
+
+    padding: 0 13px;
+
+    border: 1px solid #dfe3e5;
+    border-radius: 10px;
+
+    background: #fff;
+
+    font-size: 14px;
+
+    color: #506070;
+
+    outline: none;
+}
+
+
+/* E-MAIL */
+
+.meuperfil-campo input[readonly] {
+    background: #f7f8f8;
+
+    color: #999;
+}
+
+
+/* INPUT CLICADO */
+
+.meuperfil-campo input:not([readonly]):focus {
+    border-color: #2cc782;
+
+    box-shadow: 0 0 0 2px rgba(44, 199, 130, 0.1);
+}
+
+
+/* =====================================
+   BOTÃO
+===================================== */
+
+.meuperfil-salvar {
+    margin-top: 11px;
+
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #2cc782;
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.meuperfil-salvar:hover {
+    background: #23b572;
+}
+
+
+/* =====================================
+   RESPONSIVO
+===================================== */
+
+@media (max-width: 700px) {
+
+    .meuperfil-container {
+        width: 100%;
+        padding: 25px 20px;
+    }
+
+    .meuperfil-card {
+        padding: 25px 20px;
+    }
+
+    .meuperfil-titulo {
+        font-size: 28px;
+    }
+
+}

@@ -67,8 +67,17 @@ router.post("/login", (req, res) => {
 
     if (email && senha) {
 
+        // Salva os dados do usuário na sessão
         req.session.usuarioId = 1;
-        req.session.usuarioNome = "Usuário";
+        req.session.usuarioNome = email.split("@")[0];
+        req.session.usuarioEmail = email;
+
+        // Mostra o login no terminal
+        console.log("=================================");
+        console.log("LOGIN REALIZADO");
+        console.log("E-mail:", email);
+        console.log("Nome:", req.session.usuarioNome);
+        console.log("=================================");
 
         return res.redirect("/remedios");
     }
@@ -98,9 +107,16 @@ router.post("/cadastro", (req, res) => {
     }
 
     req.session.usuarioId = 1;
-    req.session.usuarioNome = nome;
+req.session.usuarioNome = nome;
+req.session.usuarioEmail = email;
 
-    res.redirect("/");
+console.log("=================================");
+console.log("CADASTRO REALIZADO");
+console.log("Nome:", nome);
+console.log("E-mail:", email);
+console.log("=================================");
+
+res.redirect("/");
 
 });
 
@@ -252,6 +268,26 @@ router.get("/admin", (req, res) => {
         tab,
         dados: dadosExemplo
     });
+});
+
+// ==================== MEU PERFIL ====================
+
+router.get("/perfil", requerLogin, (req, res) => {
+    res.render("pages/perfil", {
+        nome: req.session.usuarioNome,
+        email: req.session.usuarioEmail,
+        telefone: req.session.usuarioTelefone || "",
+        localizacao: req.session.usuarioLocalizacao || "São Paulo - SP"
+    });
+});
+
+router.post("/perfil", requerLogin, (req, res) => {
+    const { telefone, localizacao } = req.body;
+
+    req.session.usuarioTelefone = telefone;
+    req.session.usuarioLocalizacao = localizacao;
+
+    res.redirect("/perfil");
 });
 
 module.exports = router;
