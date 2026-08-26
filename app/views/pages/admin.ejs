@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - BioClicky</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body class="admin-dashboard-body">
+
+    <aside class="admin-sidebar">
+        <header class="sidebar-logo">
+            <ion-icon name="medical"></ion-icon>
+            <h1>BioClicky</h1>
+        </header>
+
+        <nav class="sidebar-menu">
+            <a href="/admin?tab=inicio" class="<%= tab === 'inicio' ? 'active' : '' %>">
+                <ion-icon name="grid-outline"></ion-icon> Início
+            </a>
+            <a href="/admin?tab=usuarios" class="<%= tab === 'usuarios' ? 'active' : '' %>">
+                <ion-icon name="people-outline"></ion-icon> Usuários
+            </a>
+            <a href="/admin?tab=medicamentos" class="<%= tab === 'medicamentos' ? 'active' : '' %>">
+                <ion-icon name="bandage-outline"></ion-icon> Medicamentos
+            </a>
+            <a href="/admin?tab=farmacias" class="<%= tab === 'farmacias' ? 'active' : '' %>">
+                <ion-icon name="business-outline"></ion-icon> Farmácias
+            </a>
+            <a href="/admin?tab=categorias" class="<%= tab === 'categorias' ? 'active' : '' %>">
+                <ion-icon name="folder-open-outline"></ion-icon> Categorias
+            </a>
+            <a href="/admin?tab=relatorios" class="<%= tab === 'relatorios' ? 'active' : '' %>">
+                <ion-icon name="bar-chart-outline"></ion-icon> Relatórios
+            </a>
+            <a href="/admin?tab=configuracoes" class="<%= tab === 'configuracoes' ? 'active' : '' %>">
+                <ion-icon name="settings-outline"></ion-icon> Configurações
+            </a>
+        </nav>
+
+        <footer class="sidebar-footer">
+            <a href="/admin/login" class="logout-btn">
+                <ion-icon name="log-out-outline"></ion-icon> Sair
+            </a>
+        </footer>
+    </aside>
+
+    <main class="admin-main-container">
+        <header class="content-header">
+            <h2>Painel de Controle</h2>
+            <p>Gerenciamento geral do sistema</p>
+        </header>
+
+        <% if (tab === 'inicio') { %>
+            <section class="dashboard-grid">
+                <article class="stat-card">
+                    <ion-icon name="people-outline" class="icon-blue"></ion-icon>
+                    <h3>Usuários</h3>
+                    <p class="stat-number">1,240</p>
+                </article>
+                <article class="stat-card">
+                    <ion-icon name="bandage-outline" class="icon-green"></ion-icon>
+                    <h3>Medicamentos</h3>
+                    <p class="stat-number">4,820</p>
+                </article>
+                <article class="stat-card">
+                    <ion-icon name="business-outline" class="icon-orange"></ion-icon>
+                    <h3>Farmácias</h3>
+                    <p class="stat-number">86</p>
+                </article>
+            </section>
+
+        <% } else if (tab === 'usuarios') { %>
+            <section class="table-section">
+                <header class="table-header">
+                    <h3>Lista de Usuários</h3>
+                    <button class="add-btn">+ Novo Usuário</button>
+                </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% dados.usuarios.forEach(user => { %>
+                            <tr>
+                                <td>#<%= user.id %></td>
+                                <td><%= user.nome %></td>
+                                <td><%= user.email %></td>
+                                <td><span class="badge"><%= user.tipo %></span></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </section>
+
+        <% } else if (tab === 'medicamentos') { %>
+            <section class="table-section">
+                <header class="table-header">
+                    <h3>Lista de Medicamentos</h3>
+                    <button class="add-btn">+ Cadastrar Remédio</button>
+                </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% dados.medicamentos.forEach(med => { %>
+                            <tr>
+                                <td>#<%= med.id %></td>
+                                <td><%= med.nome %></td>
+                                <td><%= med.categoria %></td>
+                                <td><%= med.preco %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </section>
+
+        <% } else if (tab === 'farmacias') { %>
+            <section class="table-section">
+                <header class="table-header">
+                    <h3>Parceiros (Farmácias)</h3>
+                    <button class="add-btn">+ Adicionar Rede</button>
+                </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Cidade</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% dados.farmacias.forEach(farm => { %>
+                            <tr>
+                                <td>#<%= farm.id %></td>
+                                <td><%= farm.nome %></td>
+                                <td><%= farm.cidade %></td>
+                                <td><span class="badge active"><%= farm.status %></span></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </section>
+
+        <% } else if (tab === 'categorias') { %>
+            <section class="table-section">
+                <header class="table-header">
+                    <h3>Categorias de Medicamentos</h3>
+                    <button class="add-btn">+ Nova Categoria</button>
+                </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome da Categoria</th>
+                            <th>Total de Itens</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% dados.categorias.forEach(cat => { %>
+                            <tr>
+                                <td>#<%= cat.id %></td>
+                                <td><%= cat.nome %></td>
+                                <td><%= cat.total %> produtos</td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </section>
+
+        <% } else if (tab === 'relatorios') { %>
+            <section class="reports-section">
+                <h3>Relatórios Disponíveis</h3>
+                <p>Abaixo estão os relatórios consolidados do sistema para download:</p>
+                <ul class="report-list">
+                    <li>
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Medicamentos mais procurados (Mês Atual)</span>
+                        <button class="download-btn">Baixar PDF</button>
+                    </li>
+                    <li>
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Relatório de novos cadastros</span>
+                        <button class="download-btn">Baixar PDF</button>
+                    </li>
+                </ul>
+            </section>
+
+        <% } else if (tab === 'configuracoes') { %>
+            <section class="config-section">
+                <h3>Configuração da Loja</h3>
+                <form class="config-form" onsubmit="event.preventDefault();">
+                    <label for="nome_plataforma">Nome do Sistema</label>
+                    <input type="text" id="nome_plataforma" value="BioClicky">
+
+                    <label for="email_sistema">Email Geral</label>
+                    <input type="email" id="email_sistema" value="admin@bioclicky.com.br">
+
+                    <label for="status_sistema">Modo de Operação</label>
+                    <select id="status_sistema">
+                        <option value="online">Online para o público</option>
+                        <option value="manutencao">Modo Manutenção</option>
+                    </select>
+
+                    <button type="button" class="add-btn">Salvar Alterações</button>
+                </form>
+            </section>
+        <% } %>
+    </main>
+
+</body>
+</html>
