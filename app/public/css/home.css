@@ -27,6 +27,7 @@ body{
     background: linear-gradient(#f8fffd, #eef9f4);
     padding: 40px;
     box-sizing: border-box;
+    
 }
 
 .hero h1{
@@ -160,6 +161,7 @@ article p{
     justify-content: space-between;
     height: 80px;
     padding: 0 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }   
 
 .logo {
@@ -1663,6 +1665,7 @@ RESPONSIVO
 /* Área de Cabeçalhos dos Containers */
 .container-.hero {
     margin-bottom: 30px;
+    
 }
 
 .container-.hero h2, .container-.hero h3 {
