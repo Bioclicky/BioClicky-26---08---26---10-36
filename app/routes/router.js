@@ -162,9 +162,72 @@ router.get("/remedios", requerLogin, (req, res) => {
 });
 
 router.get("/farmacias", requerLogin, (req, res) => {
+
+    const { busca, cidade, nota } = req.query;
+
+    let farmacias = [
+        {
+            nome: "Droga Raia",
+            nota: 4.3,
+            cidade: "São Paulo",
+            endereco: "Rua Augusta, 2200",
+            telefone: "(11) 3120-5500",
+            parceira: true
+        },
+        {
+            nome: "Drogasil",
+            nota: 4.5,
+            cidade: "São Paulo",
+            endereco: "Avenida Paulista, 1540",
+            telefone: "(11) 3254-1234",
+            parceira: true
+        },
+        {
+            nome: "Ultrafarma",
+            nota: 4.4,
+            cidade: "São Paulo",
+            endereco: "Rua Vergueiro, 800",
+            telefone: "(11) 4002-8922",
+            parceira: true
+        },
+        {
+            nome: "Pague Menos",
+            nota: 4.2,
+            cidade: "Barueri",
+            endereco: "Av. Brigadeiro Faria Lima, 1800",
+            telefone: "(11) 4004-8000",
+            parceira: true
+        }
+    ];
+
+    if (busca) {
+        farmacias = farmacias.filter(f =>
+            f.nome.toLowerCase().includes(busca.toLowerCase())
+        );
+    }
+
+    if (cidade) {
+        farmacias = farmacias.filter(f =>
+            f.cidade === cidade
+        );
+    }
+
+    if (nota) {
+        farmacias = farmacias.filter(f =>
+            f.nota >= Number(nota)
+        );
+    }
+
     res.render("pages/farmacias", {
-        usuario: req.session.usuarioNome
+        farmacias,
+        usuario: req.session.usuarioNome,
+        filtros: {
+            busca,
+            cidade,
+            nota
+        }
     });
+
 });
 
 router.get("/categorias", requerLogin, (req, res) => {
