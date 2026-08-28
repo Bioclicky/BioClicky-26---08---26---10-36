@@ -248,89 +248,225 @@ router.get("/categorias", requerLogin, (req, res) => {
 
 // ==================== ADMIN ====================
 
-router.post("/admin/login", (req, res) => {
+// 🔒 MIDDLEWARE DE SEGURANÇA DO ADMIN
+function requerAdmin(req, res, next) {
 
-    const { email, senha } = req.body;
-
-    if (email === "admin@bioclicky.com" && senha === "123456") {
-        return res.redirect("/admin");
+    if (req.session && req.session.adminId) {
+        return next();
     }
 
-    res.send("Administrador não encontrado ou senha incorreta.");
+    return res.redirect("/admin");
+}
+
+
+// ==================== LOGIN ADMIN ====================
+
+router.get("/admin", (req, res) => {
+
+    // Se já estiver logado, vai direto para o dashboard
+    if (req.session && req.session.adminId) {
+        return res.redirect("/admin/dashboard");
+    }
+
+    res.render("pages/admin", {
+        erro: null
+    });
 
 });
 
 
-router.get("/admin", (req, res) => {
+router.post("/admin/login", (req, res) => {
 
-    const tab = req.query.tab || "inicio";
+    const { email, senha } = req.body;
 
-    const dadosExemplo = {
-        usuarios: [
-            {
-                id: 1,
-                nome: "Carlos Silva",
-                email: "carlos@email.com",
-                tipo: "Cliente"
-            },
-            {
-                id: 2,
-                nome: "Ana Souza",
-                email: "ana@farmacia.com",
-                tipo: "Farmácia"
-            }
-        ],
-        medicamentos: [
-            {
-                id: 101,
-                nome: "Paracetamol 500mg",
-                categoria: "Analgésicos",
-                preco: "R$ 8,50"
-            },
-            {
-                id: 102,
-                nome: "Amoxicilina 500mg",
-                categoria: "Antibióticos",
-                preco: "R$ 42,00"
-            }
-        ],
-        farmacias: [
-            {
-                id: 1,
-                nome: "Drogasil Centro",
-                cidade: "São Paulo",
-                status: "Ativa"
-            },
-            {
-                id: 2,
-                nome: "Drogaria São Paulo",
-                cidade: "Barueri",
-                status: "Ativa"
-            }
-        ],
-        categorias: [
-            {
-                id: 1,
-                nome: "Analgésicos",
-                total: 45
-            },
-            {
-                id: 2,
-                nome: "Antibióticos",
-                total: 22
-            },
-            {
-                id: 3,
-                nome: "Vitaminas",
-                total: 19
-            }
-        ]
-    };
+    // Login de demonstração
+    if (
+        email === "admin@bioclicky.com" &&
+        senha === "123456"
+    ) {
+
+        // Salva o administrador na sessão
+        req.session.adminId = 1;
+        req.session.adminNome = "Admin";
+        req.session.adminEmail = email;
+
+        console.log("=================================");
+        console.log("LOGIN ADMIN REALIZADO");
+        console.log("E-mail:", email);
+        console.log("=================================");
+
+        return res.redirect("/admin/dashboard");
+    }
 
     res.render("pages/admin", {
-        tab,
-        dados: dadosExemplo
+        erro: "Administrador não encontrado ou senha incorreta."
     });
+
+});
+
+
+// ==================== DASHBOARD ====================
+
+router.get("/admin/dashboard", requerAdmin, (req, res) => {
+
+    const estatisticas = {
+        usuarios: 19421,
+        pesquisas: 3284,
+        medicamentos: 10482,
+        farmacias: 532
+    };
+
+    res.render("pages/admin-dashboard", {
+        admin: req.session.adminNome,
+        estatisticas
+    });
+
+});
+
+
+// ==================== USUÁRIOS ====================
+
+router.get("/admin/usuarios", requerAdmin, (req, res) => {
+
+    const usuarios = [
+        {
+            id: 1,
+            nome: "Carlos Silva",
+            email: "carlos@email.com",
+            tipo: "Cliente"
+        },
+        {
+            id: 2,
+            nome: "Ana Souza",
+            email: "ana@farmacia.com",
+            tipo: "Farmácia"
+        }
+    ];
+
+    res.render("pages/admin-usuarios", {
+        usuarios,
+        admin: req.session.adminNome
+    });
+
+});
+
+
+// ==================== MEDICAMENTOS ====================
+
+router.get("/admin/medicamentos", requerAdmin, (req, res) => {
+
+    const medicamentos = [
+        {
+            id: 101,
+            nome: "Paracetamol 500mg",
+            categoria: "Analgésicos",
+            preco: "R$ 8,50"
+        },
+        {
+            id: 102,
+            nome: "Amoxicilina 500mg",
+            categoria: "Antibióticos",
+            preco: "R$ 42,00"
+        }
+    ];
+
+    res.render("pages/admin-medicamentos", {
+        medicamentos,
+        admin: req.session.adminNome
+    });
+
+});
+
+
+// ==================== FARMÁCIAS ====================
+
+router.get("/admin/farmacias", requerAdmin, (req, res) => {
+
+    const farmacias = [
+        {
+            id: 1,
+            nome: "Drogasil Centro",
+            cidade: "São Paulo",
+            status: "Ativa"
+        },
+        {
+            id: 2,
+            nome: "Drogaria São Paulo",
+            cidade: "Barueri",
+            status: "Ativa"
+        }
+    ];
+
+    res.render("pages/admin-farmacias", {
+        farmacias,
+        admin: req.session.adminNome
+    });
+
+});
+
+
+// ==================== CATEGORIAS ====================
+
+router.get("/admin/categorias", requerAdmin, (req, res) => {
+
+    const categorias = [
+        {
+            id: 1,
+            nome: "Analgésicos",
+            total: 45
+        },
+        {
+            id: 2,
+            nome: "Antibióticos",
+            total: 22
+        },
+        {
+            id: 3,
+            nome: "Vitaminas",
+            total: 19
+        }
+    ];
+
+    res.render("pages/admin-categorias", {
+        categorias,
+        admin: req.session.adminNome
+    });
+
+});
+
+
+// ==================== RELATÓRIOS ====================
+
+router.get("/admin/relatorios", requerAdmin, (req, res) => {
+
+    res.render("pages/admin-relatorios", {
+        admin: req.session.adminNome
+    });
+
+});
+
+
+// ==================== CONFIGURAÇÕES ====================
+
+router.get("/admin/configuracoes", requerAdmin, (req, res) => {
+
+    res.render("pages/admin-configuracoes", {
+        admin: req.session.adminNome
+    });
+
+});
+
+
+// ==================== LOGOUT ADMIN ====================
+
+router.get("/admin/logout", (req, res) => {
+
+    req.session.adminId = null;
+    req.session.adminNome = null;
+    req.session.adminEmail = null;
+
+    res.redirect("/admin");
+
 });
 
 // ==================== MEU PERFIL ====================

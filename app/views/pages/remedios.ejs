@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/home.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="/app/public/js/filtros.js" defer></script>
 </head>
 
 <body class="internal-body">
@@ -67,10 +68,16 @@
 
     <section class="barra-filtros">
 
-        <label class="busca-remedio">
-            <ion-icon name="search-outline"></ion-icon>
-            <input type="text" placeholder="Buscar remédio...">
-        </label>
+<label class="busca-remedio">
+    <ion-icon name="search-outline"></ion-icon>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Buscar remédio..."
+        autocomplete="off"
+    >
+</label>
 
         <select class="ordenar-select">
             <option>Menor preço</option>
@@ -215,5 +222,7 @@
         © 2026 BioClicky. Todos os direitos reservados.
     </section>
 </footer>
+
+<script src="/public/js/"></script>
 </body>
 </html>
