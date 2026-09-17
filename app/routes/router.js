@@ -9,16 +9,20 @@ router.use((req, res, next) => {
     next();
 });
 
+
 // 🔒 MIDDLEWARE DE SEGURANÇA
 function requerLogin(req, res, next) {
     if (req.session && req.session.usuarioId) {
         return next();
     }
+
     res.redirect("/login");
 }
 
+
 // ==================== ROTAS PÚBLICAS ====================
 
+// INÍCIO
 router.get("/", (req, res) => {
     res.render("pages/home", {
         remedio: null,
@@ -27,6 +31,8 @@ router.get("/", (req, res) => {
     });
 });
 
+
+// LOGIN
 router.get("/login", (req, res) => {
 
     if (req.session.usuarioId) {
@@ -39,6 +45,8 @@ router.get("/login", (req, res) => {
 
 });
 
+
+// CADASTRO
 router.get("/cadastro", (req, res) => {
 
     if (req.session.usuarioId) {
@@ -51,13 +59,18 @@ router.get("/cadastro", (req, res) => {
 
 });
 
+
+// RECUPERAÇÃO DE SENHA
 router.get("/senha", (req, res) => {
     res.render("pages/senha");
 });
 
+
+// SOBRE
 router.get("/sobre", (req, res) => {
     res.render("pages/sobre");
 });
+
 
 // ==================== LOGIN USUÁRIO ====================
 
@@ -88,6 +101,7 @@ router.post("/login", (req, res) => {
 
 });
 
+
 // ==================== CADASTRO ====================
 
 router.post("/cadastro", (req, res) => {
@@ -107,29 +121,48 @@ router.post("/cadastro", (req, res) => {
     }
 
     req.session.usuarioId = 1;
-req.session.usuarioNome = nome;
-req.session.usuarioEmail = email;
+    req.session.usuarioNome = nome;
+    req.session.usuarioEmail = email;
 
-console.log("=================================");
-console.log("CADASTRO REALIZADO");
-console.log("Nome:", nome);
-console.log("E-mail:", email);
-console.log("=================================");
+    console.log("=================================");
+    console.log("CADASTRO REALIZADO");
+    console.log("Nome:", nome);
+    console.log("E-mail:", email);
+    console.log("=================================");
 
-res.redirect("/");
+    res.redirect("/");
 
 });
+
 
 // ==================== LOGOUT ====================
 
 router.get("/sair", (req, res) => {
+
     req.session.destroy();
+
     res.redirect("/");
+
 });
 
-// ==================== ÁREA RESTRITA ====================
 
-router.get("/remedios", requerLogin, (req, res) => {
+// ============================================================
+// ==================== PÁGINAS PRINCIPAIS ====================
+// ============================================================
+// Estas páginas são PÚBLICAS.
+// O usuário NÃO precisa estar logado para acessá-las.
+//
+// /remedios
+// /farmacias
+// /categorias
+//
+// O problema anterior era o "requerLogin" nessas três rotas.
+// ============================================================
+
+
+// ==================== REMÉDIOS ====================
+
+router.get("/remedios", (req, res) => {
 
     const dadosRemedios = [
         {
@@ -157,11 +190,15 @@ router.get("/remedios", requerLogin, (req, res) => {
 
     res.render("pages/remedios", {
         remedios: dadosRemedios,
-        usuario: req.session.usuarioNome
+        usuario: req.session.usuarioNome || null
     });
+
 });
 
-router.get("/farmacias", requerLogin, (req, res) => {
+
+// ==================== FARMÁCIAS ====================
+
+router.get("/farmacias", (req, res) => {
 
     const { busca, cidade, nota } = req.query;
 
@@ -200,27 +237,40 @@ router.get("/farmacias", requerLogin, (req, res) => {
         }
     ];
 
+
+    // FILTRO POR NOME
     if (busca) {
+
         farmacias = farmacias.filter(f =>
             f.nome.toLowerCase().includes(busca.toLowerCase())
         );
+
     }
 
+
+    // FILTRO POR CIDADE
     if (cidade) {
+
         farmacias = farmacias.filter(f =>
             f.cidade === cidade
         );
+
     }
 
+
+    // FILTRO POR NOTA
     if (nota) {
+
         farmacias = farmacias.filter(f =>
             f.nota >= Number(nota)
         );
+
     }
+
 
     res.render("pages/farmacias", {
         farmacias,
-        usuario: req.session.usuarioNome,
+        usuario: req.session.usuarioNome || null,
         filtros: {
             busca,
             cidade,
@@ -230,7 +280,10 @@ router.get("/farmacias", requerLogin, (req, res) => {
 
 });
 
-router.get("/categorias", requerLogin, (req, res) => {
+
+// ==================== CATEGORIAS ====================
+
+router.get("/categorias", (req, res) => {
 
     const dadosCategorias = [
         "Analgésicos",
@@ -242,13 +295,19 @@ router.get("/categorias", requerLogin, (req, res) => {
 
     res.render("pages/categorias", {
         categorias: dadosCategorias,
-        usuario: req.session.usuarioNome
+        usuario: req.session.usuarioNome || null
     });
+
 });
 
-// ==================== ADMIN ====================
+
+// ============================================================
+// ==================== ADMIN ================================
+// ============================================================
+
 
 // 🔒 MIDDLEWARE DE SEGURANÇA DO ADMIN
+
 function requerAdmin(req, res, next) {
 
     if (req.session && req.session.adminId) {
@@ -256,6 +315,7 @@ function requerAdmin(req, res, next) {
     }
 
     return res.redirect("/admin");
+
 }
 
 
@@ -274,6 +334,8 @@ router.get("/admin", (req, res) => {
 
 });
 
+
+// ==================== LOGIN ADMIN POST ====================
 
 router.post("/admin/login", (req, res) => {
 
@@ -378,7 +440,7 @@ router.get("/admin/medicamentos", requerAdmin, (req, res) => {
 });
 
 
-// ==================== FARMÁCIAS ====================
+// ==================== FARMÁCIAS ADMIN ====================
 
 router.get("/admin/farmacias", requerAdmin, (req, res) => {
 
@@ -405,7 +467,7 @@ router.get("/admin/farmacias", requerAdmin, (req, res) => {
 });
 
 
-// ==================== CATEGORIAS ====================
+// ==================== CATEGORIAS ADMIN ====================
 
 router.get("/admin/categorias", requerAdmin, (req, res) => {
 
@@ -469,24 +531,33 @@ router.get("/admin/logout", (req, res) => {
 
 });
 
+
 // ==================== MEU PERFIL ====================
 
 router.get("/perfil", requerLogin, (req, res) => {
+
     res.render("pages/perfil", {
         nome: req.session.usuarioNome,
         email: req.session.usuarioEmail,
         telefone: req.session.usuarioTelefone || "",
         localizacao: req.session.usuarioLocalizacao || "São Paulo - SP"
     });
+
 });
 
+
 router.post("/perfil", requerLogin, (req, res) => {
+
     const { telefone, localizacao } = req.body;
 
     req.session.usuarioTelefone = telefone;
     req.session.usuarioLocalizacao = localizacao;
 
     res.redirect("/perfil");
+
 });
+
+
+// ==================== EXPORTAÇÃO ====================
 
 module.exports = router;
